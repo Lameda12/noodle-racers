@@ -13,14 +13,13 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
-    "three": "^r159",
-    "cannon-es": "^0.20.0",
-    "wiggle": "^1.0.0"
+    "three": "^0.159.0",
+    "cannon-es": "^0.20.0"
   },
   "devDependencies": {
     "vite": "^5.0.0",
     "typescript": "^5.3.0",
-    "@types/three": "^r159.0.0",
+    "@types/three": "^0.159.0",
     "@types/node": "^20.0.0",
     "vitest": "^1.0.0",
     "@vitest/ui": "^1.0.0",
