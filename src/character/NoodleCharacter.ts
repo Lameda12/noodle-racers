@@ -4,12 +4,14 @@
  * Manages:
  * - Physics body (Cannon compound body)
  * - Three.js mesh (procedural noodle)
+ * - Bone system (spring-based jiggle animation)
  * - Movement control
  * - Collision handling
  */
 
 import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
+import { BoneSystem } from './BoneSystem';
 import type { GameState } from '@/core/GameState';
 
 export class NoodleCharacter {
@@ -17,6 +19,7 @@ export class NoodleCharacter {
   private mesh: THREE.Mesh;
   private body: CANNON.Body;
   private gameState: GameState;
+  private boneSystem: BoneSystem;
 
   // Movement state
   private moveDirection = 0; // -1, 0, 1 for left, center, right
@@ -58,6 +61,9 @@ export class NoodleCharacter {
 
     // Create Three.js mesh (simple cylinder for MVP)
     this.mesh = this.createNoodleMesh();
+
+    // Create bone system for jiggle animation
+    this.boneSystem = new BoneSystem(this.mesh, this.body, 5);
 
     console.log(`🍝 NoodleCharacter created: ${id}`);
   }
@@ -102,7 +108,7 @@ export class NoodleCharacter {
   /**
    * Apply movement forces and update mesh transform
    */
-  update(): void {
+  update(deltaTime: number = 0.016): void {
     // Apply horizontal movement force
     if (this.moveDirection !== 0) {
       const force = new CANNON.Vec3(
@@ -119,6 +125,9 @@ export class NoodleCharacter {
       this.body.position.x = Math.sign(this.body.position.x) * 5;
       this.body.velocity.x *= 0.5; // Dampen velocity on constraint
     }
+
+    // Update bone system with character velocity for jiggle animation
+    this.boneSystem.update(this.body.velocity, deltaTime);
 
     // Sync mesh to physics body
     this.mesh.position.copy(this.body.position as any);
@@ -153,6 +162,13 @@ export class NoodleCharacter {
       direction.z * magnitude
     );
     this.body.applyImpulse(impulse, this.body.position);
+  }
+
+  /**
+   * Get bone system
+   */
+  getBoneSystem(): BoneSystem {
+    return this.boneSystem;
   }
 
   /**

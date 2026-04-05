@@ -47,8 +47,8 @@ function gameLoop(currentTime: number): void {
     // Update game state (physics, scoring, difficulty)
     gameState.update(Math.min(deltaTime, 0.033)); // Cap at 33ms to prevent spiral
 
-    // Update character
-    noodleCharacter.update();
+    // Update character (with bone deformation)
+    noodleCharacter.update(Math.min(deltaTime, 0.033));
 
     // Update camera
     renderer.updateCamera(noodleCharacter.getPosition());
