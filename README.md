@@ -4,7 +4,9 @@
 
 ## 🎮 Play It Now
 
-Coming soon! [Play in Browser](https://noodle-racers.vercel.app) • [Try on GitHub](https://github.com/Lameda12/noodle-racers)
+**🚀 LIVE:** [Play in Browser](https://noodle-racers.vercel.app)  
+**📝 Code:** [GitHub Repository](https://github.com/Lameda12/noodle-racers)  
+**🐦 Share:** Made with Claude Code 💜 [Tweet](https://twitter.com/intent/tweet?text=Just%20played%20%F0%9F%8D%9D%20Noodle%20Racers!%20A%20hilarious%203D%20endless%20runner%20built%20with%20%23ThreeJS%20%26%20%23TypeScript.%20Try%20it:%20https://noodle-racers.vercel.app%20%23gamedev%20%23WebGL%20%23ClaudeCode)
 
 ## ✨ Features
 
@@ -49,20 +51,28 @@ Coming soon! [Play in Browser](https://noodle-racers.vercel.app) • [Try on Git
 
 | Technology | Purpose |
 |-----------|---------|
-| **Three.js** | 3D rendering, camera, lighting |
+| **Three.js** | 3D rendering, camera, lighting, particle effects |
 | **Cannon-es** | Fixed-timestep physics (60 FPS), collision detection |
-| **Custom Spring System** | Bone deformation for jiggly animation |
+| **Custom Spring System** | Bone deformation for realistic jiggle animation |
+| **Web Audio API** | Procedurally generated sound effects & music |
 | **Vite** | Dev server with HMR, production bundling |
 | **TypeScript** | 100% type-safe, strict mode |
-| **Vitest** | Unit testing framework |
-| **Playwright** | E2E testing (coming Phase 4) |
+| **Vitest** | 48 unit tests covering all systems |
+| **Vercel** | Serverless deployment (HTTPS, CDN) |
+
+### Features Implemented
+
+**Audio:** Background music, collision SFX, power-up chimes, game over tones  
+**Particles:** Collision bursts, power-up sparkles, milestone confetti  
+**UI:** Pause/resume, difficulty display, high score detection, name input, leaderboard  
+**Mobile:** Touch controls, responsive layout  
 
 ### Performance
-- **60 FPS** fixed-timestep physics loop
+- **60 FPS** fixed-timestep physics loop (capped delta 33ms)
 - **Object pooling** for zero garbage collection pauses
-- **Frustum culling** for off-screen obstacle skipping
-- **Procedural generation** with seeded randomness
-- **~570KB** gzipped bundle size
+- **Particle system** GPU-optimized point rendering
+- **Procedural generation** with seeded randomness (reproducible)
+- **586KB** gzipped bundle (audio + particles included)
 
 ## 🚀 Quick Start
 
@@ -113,14 +123,14 @@ Your game runs at `http://localhost:5173` with hot module reloading.
 - [x] Dynamic obstacle density
 - [x] Unlockable obstacle types per difficulty tier
 
-### 🚀 Phase 4: Polish & Deployment (Next)
-- [ ] Sound effects & background music
-- [ ] Visual particle effects
-- [ ] UI polish (menus, HUD)
-- [ ] Mobile responsiveness
-- [ ] Local leaderboard (localStorage)
-- [ ] Performance optimization
-- [ ] Deploy to Vercel
+### ✅ Phase 4: Polish & Deployment (Complete)
+- [x] Sound effects & background music (Web Audio API)
+- [x] Visual particle effects (GPU point rendering)
+- [x] UI polish (pause/resume, difficulty display, high scores)
+- [x] Mobile responsiveness (touch controls, responsive layout)
+- [x] Local leaderboard (localStorage with top 10 scores)
+- [x] Performance optimization (object pooling, batch rendering)
+- [x] Deploy to Vercel (live at https://noodle-racers.vercel.app)
 
 ## 🧪 Testing
 
@@ -173,9 +183,22 @@ This is an active learning project. Contributions welcome!
 
 MIT — Free for personal & commercial use.
 
+## 🛸 Built with Claude Code
+
+This entire game was built using **Claude Code** with a structured development workflow:
+
+1. **Research-First** — GitHub code search for existing patterns (SlashSaber endless runner)
+2. **TDD Methodology** — 48 unit tests written BEFORE implementation
+3. **Professional Git** — 8 semantic commits with detailed messages
+4. **Parallel Execution** — Multiple agents for architecture + TypeScript review
+5. **Type Safety** — 100% TypeScript strict mode
+6. **Performance First** — Object pooling, fixed-timestep physics, GPU optimization
+
+**Key Insight:** Start with tests and architecture, move fast with type safety.
+
 ## 🙏 Credits
 
-Built with [Three.js](https://threejs.org/), [Cannon.js](https://schteppe.github.io/cannon.js/), and [Wiggle Bones](https://wiggle.three.tools/).
+Built with [Three.js](https://threejs.org/), [Cannon.js](https://schteppe.github.io/cannon.js/), and custom spring-bone animation.
 
 Inspired by: Subway Surfers, Dune: Spice Wars, and the eternal chaos of physics simulations.
 
@@ -183,4 +206,4 @@ Inspired by: Subway Surfers, Dune: Spice Wars, and the eternal chaos of physics 
 
 **Made with ❤️ and way too much noodle pasta** 🍝
 
-[Play Now](https://noodle-racers.vercel.app) • [Watch Demo](https://twitter.com/search?q=noodleracers) • [Join Discord](https://discord.gg/noodleracers)
+🚀 [Play Now](https://noodle-racers.vercel.app) • 💻 [GitHub](https://github.com/Lameda12/noodle-racers) • 🐦 [Share on X](https://twitter.com/intent/tweet?text=Just%20played%20%F0%9F%8D%9D%20Noodle%20Racers!%20A%20hilarious%203D%20endless%20runner%20built%20with%20%23ThreeJS%20%26%20%23TypeScript.%20Try%20it:%20https://noodle-racers.vercel.app%20%23gamedev%20%23WebGL%20%23ClaudeCode)
