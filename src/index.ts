@@ -7,7 +7,10 @@ import { getGameState } from '@/core/GameState';
 import { Renderer } from '@/rendering/Renderer';
 import { NoodleCharacter } from '@/character/NoodleCharacter';
 import { TrackManager } from '@/track/TrackManager';
+import { TrackSegmentGenerator } from '@/track/TrackSegmentGenerator';
+import { DifficultyScaler } from '@/track/DifficultyScaler';
 import { ObstacleManager } from '@/hazards/ObstacleManager';
+import { PowerUpManager } from '@/hazards/PowerUpManager';
 import { InputHandler } from '@/input/InputHandler';
 import { HUD } from '@/ui/HUD';
 
@@ -25,6 +28,15 @@ const trackManager = new TrackManager(gameState, scene);
 
 // Create obstacles
 const obstacleManager = new ObstacleManager(gameState, scene, noodleCharacter);
+
+// Create power-ups
+const powerUpManager = new PowerUpManager(gameState, scene, noodleCharacter);
+
+// Setup difficulty scaling
+const difficultyScaler = new DifficultyScaler(gameState);
+
+// Setup track generator (for procedural generation in Phase 4)
+const trackGenerator = new TrackSegmentGenerator();
 
 // Setup input
 const inputHandler = new InputHandler(noodleCharacter);

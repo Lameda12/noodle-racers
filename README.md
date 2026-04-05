@@ -8,38 +8,61 @@ Coming soon! [Play in Browser](https://noodle-racers.vercel.app) • [Try on Git
 
 ## ✨ Features
 
-- **🤪 Jiggling Physics** — Characters bounce, wobble, and wiggle realistically using Wiggle Bones animation
-- **🏔️ Procedural Tracks** — Infinite downhill courses that get progressively harder
-- **⚡ Real-time Physics** — Cannon.js engine creates unpredictable, hilarious moments
-- **🎨 Colorful Chaos** — Procedurally generated noodle characters with unique personalities
-- **📱 Browser-based** — Play instantly, no downloads or installations
-- **🏆 Leaderboard** — Compete with friends (coming soon)
+- **🤪 Jiggling Physics** — Characters bounce, wobble, and wiggle realistically using spring-based bone deformation
+- **🏔️ Procedural Tracks** — Infinite downhill courses with curves, slopes, and progressive difficulty
+- **⚡ Real-time Physics** — Cannon.js engine with fixed-timestep physics (60 FPS stable)
+- **🎨 Colorful Chaos** — Procedurally generated noodle characters with dynamic colors
+- **💪 Multiple Obstacles** — Box obstacles, spinning obstacles, moving hazards, spiked dangers
+- **✨ Power-ups** — Speed boost, shield, magnet to change your strategy
+- **📈 Difficulty Scaling** — Game gets harder over time with unlockable obstacle types
+- **📱 Browser-based** — Play instantly, no downloads. Keyboard + touch mobile support
+- **🏆 Leaderboard** — Local high scores (localStorage)
 
 ## 🎯 Game Mechanics
 
-1. **Control** your wiggly noodle with arrow keys (← →)
-2. **Avoid obstacles** and stay on the track
-3. **Collect power-ups** for speed boosts and shields
-4. **Race as far as you can** before a dramatic noodle demise
-5. **Watch your noodle's hilarious jiggle physics** in slow-motion replays
+### Controls
+- **Arrow Keys** (or A/D) — Move left/right
+- **Touch** (mobile) — Tap left/right side of screen
 
-```
-Your noodle:    ~~~====~~~  (wiggles harder as you accelerate)
-Obstacles:      ░░░ (boxes, barriers, spinning hazards)
-Power-ups:      ⭐ (speed, shield, magnetism)
-```
+### Gameplay
+1. **Move** your wobbly noodle left/right to dodge obstacles
+2. **Collect** power-ups (⭐) to gain temporary advantages
+3. **Survive** progressively harder difficulty tiers
+4. **Race** as far as possible for high scores
+
+### Difficulty Progression
+
+| Distance | Difficulty | Features |
+|----------|-----------|----------|
+| 0m | 1.0 ⭐ | Gentle slopes, basic box obstacles |
+| 2,500m | 1.5 ⭐⭐ | Spinning obstacles unlock |
+| 5,000m | 2.0 ⭐⭐⭐ | Moving hazards spawn, steeper slopes |
+| 7,500m | 2.5 ⭐⭐⭐⭐ | Spiked obstacles added, complex curves |
+| 10,000m | 3.0 ⭐⭐⭐⭐⭐ | Max difficulty, all types |
+
+### Power-ups
+- 🔴 **Speed Boost** — +50% movement speed (5s)
+- 🟢 **Shield** — Immunity to next collision (5s)
+- 🔵 **Magnet** — Auto-collect nearby power-ups (5s)
 
 ## 🛠️ Tech Stack
 
-Built for speed and fun:
+| Technology | Purpose |
+|-----------|---------|
+| **Three.js** | 3D rendering, camera, lighting |
+| **Cannon-es** | Fixed-timestep physics (60 FPS), collision detection |
+| **Custom Spring System** | Bone deformation for jiggly animation |
+| **Vite** | Dev server with HMR, production bundling |
+| **TypeScript** | 100% type-safe, strict mode |
+| **Vitest** | Unit testing framework |
+| **Playwright** | E2E testing (coming Phase 4) |
 
-| Tech | Purpose |
-|------|---------|
-| **Three.js** | 3D rendering at 60 FPS |
-| **Cannon-es** | Physics simulation (gravity, collisions, forces) |
-| **Wiggle.js** | Soft-body bone animation for noodle jiggle |
-| **Vite** | Lightning-fast dev server & bundler |
-| **TypeScript** | Type-safe game logic |
+### Performance
+- **60 FPS** fixed-timestep physics loop
+- **Object pooling** for zero garbage collection pauses
+- **Frustum culling** for off-screen obstacle skipping
+- **Procedural generation** with seeded randomness
+- **~570KB** gzipped bundle size
 
 ## 🚀 Quick Start
 
@@ -61,33 +84,43 @@ npm run test
 
 Your game runs at `http://localhost:5173` with hot module reloading.
 
-## 📊 Development Phases
+## 📊 Development Progress
 
-### Phase 1: MVP (Current)
-- [x] Project scaffolding
-- [ ] Basic endless runner gameplay
-- [ ] Physics integration
-- [ ] Simple obstacles
-- [ ] Score tracking
+### ✅ Phase 1: MVP (Complete)
+- [x] Project scaffolding (Vite + TypeScript)
+- [x] Core game loop (60 FPS fixed-timestep)
+- [x] Physics integration (Cannon.js)
+- [x] Player character with movement
+- [x] Basic box obstacles
+- [x] Score tracking (distance-based)
+- [x] Collision detection
+- [x] Game over system
 
-### Phase 2: Animation
-- [ ] Wiggle Bones integration
-- [ ] Character jiggles realistically
-- [ ] Movement-responsive animations
-- [ ] Visual polish
+### ✅ Phase 2: Animation (Complete)
+- [x] Spring-based bone deformation system
+- [x] Velocity-responsive jiggle
+- [x] Idle oscillation animation
+- [x] Progressive bone influence
+- [x] Mesh vertex deformation
+- [x] Configuration tuning (stiffness/damping)
 
-### Phase 3: Advanced Track
-- [ ] Procedural generation
-- [ ] Difficulty scaling
-- [ ] Multiple obstacle types
-- [ ] Power-ups system
+### ✅ Phase 3: Procedural Track & Difficulty (Complete)
+- [x] Procedural track generation (curves, slopes)
+- [x] Seeded random for reproducibility
+- [x] Difficulty scaling system (1.0 → 3.0)
+- [x] Power-up system (speed, shield, magnet)
+- [x] Object pooling (obstacles, power-ups)
+- [x] Dynamic obstacle density
+- [x] Unlockable obstacle types per difficulty tier
 
-### Phase 4: Polish
-- [ ] UI/menus
-- [ ] Sound effects
-- [ ] Mobile controls
+### 🚀 Phase 4: Polish & Deployment (Next)
+- [ ] Sound effects & background music
+- [ ] Visual particle effects
+- [ ] UI polish (menus, HUD)
+- [ ] Mobile responsiveness
+- [ ] Local leaderboard (localStorage)
 - [ ] Performance optimization
-- [ ] Leaderboard
+- [ ] Deploy to Vercel
 
 ## 🧪 Testing
 
