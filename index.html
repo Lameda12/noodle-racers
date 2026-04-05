@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Noodle Racers - A hilariously fun 3D physics-based endless runner with wobbly noodle characters">
+  <meta name="theme-color" content="#ff6b6b">
+  <title>🍝 Noodle Racers</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background: #000;
+      overflow: hidden;
+    }
+
+    #root {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #canvas {
+      flex: 1;
+      display: block;
+    }
+
+    #ui {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+    }
+
+    #hud {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: #fff;
+      font-weight: bold;
+      font-size: 24px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+      font-family: 'Courier New', monospace;
+    }
+
+    #menu {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.9);
+      padding: 40px;
+      border-radius: 10px;
+      text-align: center;
+      color: #fff;
+      pointer-events: auto;
+      border: 3px solid #ff6b6b;
+    }
+
+    #menu h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      color: #ff6b6b;
+    }
+
+    #menu p {
+      font-size: 18px;
+      margin-bottom: 30px;
+      color: #ccc;
+    }
+
+    #menu button {
+      background: #ff6b6b;
+      color: #fff;
+      border: none;
+      padding: 12px 30px;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 10px;
+      transition: all 0.3s ease;
+      pointer-events: auto;
+    }
+
+    #menu button:hover {
+      background: #ff5252;
+      transform: scale(1.05);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <div id="ui">
+      <div id="hud">
+        <div>Distance: <span id="distance">0</span>m</div>
+        <div>Speed: <span id="speed">0</span>km/h</div>
+        <div>Score: <span id="score">0</span></div>
+      </div>
+      <div id="menu">
+        <h1>🍝 Noodle Racers</h1>
+        <p>Guide your wobbly noodle to victory!</p>
+        <button id="startBtn">Start Game</button>
+        <button id="settingsBtn">Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/index.ts"></script>
+</body>
+</html>
