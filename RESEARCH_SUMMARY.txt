@@ -1,0 +1,331 @@
+================================================================================
+GITHUB RESEARCH SUMMARY: Three.js + Cannon.js Game Architecture
+================================================================================
+
+OBJECTIVE:
+Find production-ready patterns for Three.js + Cannon.js games with focus on:
+- Clear game loop architecture
+- Physics integration patterns
+- Character controller implementation
+- Obstacle spawning system
+- Score/state management
+
+================================================================================
+TOP 3 REPOSITORIES
+================================================================================
+
+1. SKETCHBOOK (swift502/Sketchbook)
+   Stars: 1,712 | Forks: 480 | Updated: Oct 2024
+   GitHub: https://github.com/swift502/Sketchbook
+
+   What: 3D physics playground with vehicles, characters, scenarios
+   Tech: Three.js + Cannon.js + TypeScript + Webpack
+   Code Quality: EXCELLENT - well-maintained, extensive
+
+   Key Patterns:
+   - Variable timestep with time-scale support
+   - Spring-based character movement
+   - Ray-cast ground detection
+   - Collider abstraction interface
+   - Updatable registration system
+   - Complex state management (scenarios, vehicles)
+
+   Best For Learning: Advanced physics integration, character controllers
+
+2. VIDEO2GAME (video2game/video2game)
+   Stars: 330 | Forks: 23 | Updated: Apr 2024
+   GitHub: https://github.com/video2game/video2game
+
+   What: NeRF-based 3D environment with character locomotion
+   Tech: Three.js + Cannon.js + TypeScript + Complex colliders
+   Code Quality: GOOD - academic/production hybrid
+
+   Key Patterns:
+   - Extended collider system (ConvexCollider, SphereCollider, etc.)
+   - Mesh simplification for physics
+   - Character mesh integration
+   - NeRF shader implementation
+
+   Best For Learning: Advanced collider systems, mesh physics
+
+3. SLASHSABER (honzaap/SlashSaber) *** MOST SIMILAR TO NOODLE RACERS ***
+   Stars: 66 | Forks: 11 | Updated: Sep 2023
+   GitHub: https://github.com/honzaap/SlashSaber
+
+   What: Endless slashing game with obstacle spawning
+   Tech: Three.js + Cannon-es + Vue.js + Vite
+   Code Quality: EXCELLENT - clean, focused, production-ready
+
+   Key Patterns:
+   - Fixed timestep (60fps) physics loop
+   - Singleton GameState with event system
+   - Fixed object pool (max 17 obstacles)
+   - Distance-based obstacle spawning
+   - Placement rotation system
+   - Score calculation from speed
+   - Progressive difficulty
+
+   RECOMMENDATION: USE THIS AS PRIMARY REFERENCE FOR NOODLE RACERS
+   This project solves the exact problem: endless game with procedural obstacles
+
+================================================================================
+KEY ARCHITECTURAL DECISIONS
+================================================================================
+
+1. GAME LOOP: FIXED TIMESTEP (SlashSaber Pattern)
+
+   Why: Deterministic physics, prevents jitter, feels right for racing games
+
+   Implementation:
+   - Cannon.World.step(fixedTimeStep=1/60, actualDelta, iterations=3)
+   - Game logic runs AFTER physics step
+   - Variable delta for game math (speed acceleration)
+
+   Code:
+   ```
+   const fixedTimeStep = 1.0 / 60.0;
+
+   update(delta) {
+       this.world.step(fixedTimeStep, delta, 3);
+
+       for(const handler of this.logicHandlers) {
+           handler(delta);
+       }
+
+       this.score += this.speed * delta;
+   }
+   ```
+
+2. PHYSICS LIBRARY: CANNON-ES (Recommended)
+
+   Instead of Cannon.js:
+   - Modern ES modules
+   - Better tree-shaking
+   - Smaller bundle size
+   - Same API
+   - npm install cannon-es
+
+   Only use Cannon.js if inheriting existing project
+
+3. STATE MANAGEMENT: SINGLETON WITH EVENTS
+
+   Why: Single source of truth, decoupled systems
+
+   GameState Contains:
+   - Physics world (CANNON.World)
+   - Scene (THREE.Scene)
+   - Game metrics (speed, score, distance, lifes)
+   - Logic handler registry
+   - Event dispatcher
+
+   Benefits:
+   - Obstacles don't need GameState reference (use events)
+   - UI updates via listeners
+   - Easy to add analytics
+   - Clean separation of concerns
+
+4. OBSTACLE SYSTEM: FIXED POOL WITH STREAMING
+
+   Why: Prevents garbage collection pauses, consistent performance
+
+   Pool Strategy:
+   - maxObstacles = 15 (fixed size)
+   - Always spawn when count < max
+   - Distance-based spawning (not time-based)
+   - Automatic despawn when out of bounds
+
+   Distance Calculation:
+   - Normal mode: 2.5-3.0 units apart
+   - Rush mode: 1.8-2.3 units apart
+   - Randomized: Math.random() * (max - min) + min
+
+   Placement Rotation:
+   - LEFT, CENTER, RIGHT (prevent repetition)
+   - Track last-used with cooldown
+   - Select least-recently-used placement
+   - Prevents 3+ obstacles in a row on same side
+
+5. PHYSICS-RENDERING SYNC: MANUAL
+
+   Why: Allows game-specific transforms (obstacles moving forward)
+
+   Pattern:
+   ```
+   for(const piece of slicedPieces) {
+       piece.body.position.z += speed * delta;
+
+       piece.model.position.copy(piece.body.position);
+       piece.model.quaternion.copy(piece.body.quaternion);
+   }
+   ```
+
+   Benefits:
+   - Explicit control
+   - Can apply additional transforms
+   - Easy to debug desynchronization
+   - Perfect for streaming games
+
+6. COLLIDER SELECTION: SIMPLE FIRST
+
+   Recommendation:
+   1. Sphere (fastest, good for obstacles)
+   2. Box (second fastest, good for terrain)
+   3. Capsule (character controllers)
+   4. ConvexCollider (complex static shapes)
+   5. Trimesh (ONLY for static terrain)
+
+   NEVER use Trimesh for dynamic bodies (too slow)
+
+================================================================================
+PERFORMANCE OPTIMIZATIONS
+================================================================================
+
+Physics World Setup:
+- world.broadphase = new CANNON.SAPBroadphase(world)  // Fast collision detection
+- world.solver.iterations = 10  // Accuracy/performance tradeoff
+- world.allowSleep = true  // Deactivate inactive bodies
+- Fixed timestep = 1/60  // Consistent frame rate
+
+Rendering Setup:
+- powerPreference: 'high-performance'
+- pixelRatio cap: Math.min(window.devicePixelRatio, 1.5)
+- antialias: true
+- SRGB color space
+- Clear color: black (no transparency needed)
+
+Memory Management:
+- Object pooling (fixed obstacle count)
+- Reuse model clones (don't create new geometries)
+- Remove from scene BEFORE removing from physics
+- Explicit cleanup in update loops
+
+================================================================================
+TESTING RECOMMENDATIONS
+================================================================================
+
+Unit Tests:
+- Physics world initialization
+- Obstacle spawning logic
+- Placement rotation algorithm
+- Score calculation
+- Speed progression
+
+Integration Tests:
+- Game loop timing
+- Physics stepping consistency
+- Obstacle-physics synchronization
+- Event dispatch and handling
+
+Performance Tests:
+- Frame time budget (16ms for 60fps)
+- Memory allocation patterns
+- Garbage collection impact
+- Physics solver iterations
+
+================================================================================
+FILES CREATED FOR NOODLE RACERS
+================================================================================
+
+1. ARCHITECTURE_RESEARCH.md (Comprehensive Analysis)
+   - Top 3 repositories with detailed breakdown
+   - Game loop patterns (fixed vs variable timestep)
+   - Physics integration approaches
+   - Character controller architecture
+   - Obstacle spawning system
+   - Score/state management
+   - Memory management strategies
+   - Full architectural comparison matrix
+   - Physics decision making
+   - Testing recommendations
+
+2. IMPLEMENTATION_PATTERNS.md (Copy-Paste Ready)
+   - GameState singleton with event system
+   - ObstacleManager with fixed pool
+   - PhysicsSync helper
+   - Collider abstraction classes
+   - Renderer setup
+   - Input handler
+   - Integration example
+   - Performance checklist
+
+3. RESEARCH_SUMMARY.txt (This File)
+   - Quick reference of findings
+   - Repository overview
+   - Key decisions explained
+   - Performance optimizations
+   - Testing recommendations
+
+================================================================================
+IMMEDIATE NEXT STEPS FOR NOODLE RACERS
+================================================================================
+
+1. Set up project structure:
+   - src/game/GameState.ts (copy from IMPLEMENTATION_PATTERNS.md)
+   - src/game/ObstacleManager.ts (copy from IMPLEMENTATION_PATTERNS.md)
+   - src/physics/Colliders.ts (copy from IMPLEMENTATION_PATTERNS.md)
+   - src/renderer/Renderer.ts (copy from IMPLEMENTATION_PATTERNS.md)
+   - src/input/InputHandler.ts (copy from IMPLEMENTATION_PATTERNS.md)
+
+2. Install dependencies:
+   - npm install three
+   - npm install cannon-es
+   - npm install vite (or webpack)
+
+3. Implement core game loop:
+   - Use fixed timestep (1/60s)
+   - Hook obstacle manager to logic handlers
+   - Connect input to player movement
+   - Wire up scoring system
+
+4. Model/Asset requirements:
+   - Create 3-5 obstacle models
+   - Player model/character
+   - Track/environment visual
+
+5. Create obstacle templates:
+   - Define placement (LEFT, CENTER, RIGHT)
+   - Set rarity tiers for progression
+   - Animation clips (optional)
+
+================================================================================
+REPOSITORY REFERENCE
+================================================================================
+
+Sketchbook (Learning):
+https://github.com/swift502/Sketchbook
+- Complex systems, vehicles, scenarios
+- Advanced character controllers
+- Extensive physics usage
+
+Video2Game (Advanced):
+https://github.com/video2game/video2game
+- NeRF integration
+- Advanced colliders
+- Mesh physics
+
+SlashSaber (COPY THIS):
+https://github.com/honzaap/SlashSaber
+- Same game pattern as Noodle Racers
+- Clean, focused code
+- Production-ready patterns
+- Excellent example to fork
+
+================================================================================
+FINAL RECOMMENDATION
+================================================================================
+
+For Noodle Racers implementation:
+1. Use SlashSaber as the primary reference (same pattern)
+2. Use IMPLEMENTATION_PATTERNS.md for boilerplate code
+3. Adapt obstacle spawning for your specific game mechanics
+4. Use fixed timestep (1/60) physics loop
+5. Use Cannon-es for physics (modern, smaller)
+6. Pre-load models and use object pooling
+7. Manual physics-to-mesh sync for control
+
+Estimated Implementation Time: 2-3 weeks for MVP
+- 1 week: Core game loop + basic obstacles
+- 1 week: Physics integration + collision detection
+- 1 week: UI, scoring, game states
+
+================================================================================
