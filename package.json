@@ -1,0 +1,29 @@
+{
+  "name": "noodle-racers",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "A hilariously fun 3D physics-based endless runner with wobbly noodle characters",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "three": "^r159",
+    "cannon-es": "^0.20.0",
+    "wiggle": "^1.0.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "typescript": "^5.3.0",
+    "@types/three": "^r159.0.0",
+    "@types/node": "^20.0.0",
+    "vitest": "^1.0.0",
+    "@vitest/ui": "^1.0.0",
+    "@playwright/test": "^1.40.0"
+  }
+}
