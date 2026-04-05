@@ -27,8 +27,8 @@ export class BoneSystem {
   private body: CANNON.Body;
 
   // Spring physics parameters
-  private stiffness: number = 0.5; // How quickly bones return to rest
-  private damping: number = 0.8; // How much oscillation is damped
+  private stiffness: number = 2.0; // How quickly bones return to rest (increased for faster convergence)
+  private damping: number = 0.95; // How much oscillation is damped (increased for faster settling)
   private velocityInfluence: number = 0.02; // How much physics velocity affects bones
 
   // Idle jiggle
@@ -225,7 +225,7 @@ export class BoneSystem {
    * Set stiffness parameter
    */
   setStiffness(value: number): void {
-    this.stiffness = Math.max(0, Math.min(1, value));
+    this.stiffness = Math.max(0, value);
   }
 
   /**
@@ -239,7 +239,7 @@ export class BoneSystem {
    * Set damping parameter
    */
   setDamping(value: number): void {
-    this.damping = Math.max(0, Math.min(1, value));
+    this.damping = Math.max(0, Math.min(2, value)); // Allow up to 2 for strong damping
   }
 
   /**
